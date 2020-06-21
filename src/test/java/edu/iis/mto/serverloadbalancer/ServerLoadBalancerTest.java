@@ -16,7 +16,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndNoVmsShouldResultInServerWithNoVms() {
+    public void oneServerAndNoVmsShouldResultInServerWithNoVms() throws NotEnoughFreeSpaceInServerException {
         Vm[] vms = new Vm[0];
         serverLoadBalancer.balance(singleServerArray, vms);
 
@@ -24,7 +24,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerWith10CapacityAndOneVmWith10SizeShouldResultInFullyFilledServer() {
+    public void oneServerWith10CapacityAndOneVmWith10SizeShouldResultInFullyFilledServer() throws NotEnoughFreeSpaceInServerException {
         Vm[] vms = {new Vm(10)};
         serverLoadBalancer.balance(singleServerArray, vms);
 
@@ -33,7 +33,8 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer() {
+    public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer()
+		    throws NotEnoughFreeSpaceInServerException {
         Vm[] vms = {new Vm(5)};
         serverLoadBalancer.balance(singleServerArray, vms);
 
@@ -42,7 +43,8 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndFewVmsWithFillingServerCapacityShouldResultInFilledServerContainingAllVms() {
+    public void oneServerAndFewVmsWithFillingServerCapacityShouldResultInFilledServerContainingAllVms()
+		    throws NotEnoughFreeSpaceInServerException {
         Vm[] vms = {new Vm(5), new Vm(3), new Vm(1), new Vm(1)};
         serverLoadBalancer.balance(singleServerArray, vms);
 
@@ -51,7 +53,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void twoServersAndOneVmShouldBeAssignedToLessFilledServer() {
+    public void twoServersAndOneVmShouldBeAssignedToLessFilledServer() throws NotEnoughFreeSpaceInServerException {
         Server[] servers = {new ServerBuilder().withCapacity(10)
                                                .withFilledCapacity(6).build(), new ServerBuilder().withCapacity(10)
                                                                                                   .withFilledCapacity(3).build(),};
@@ -64,4 +66,11 @@ public class ServerLoadBalancerTest {
         assertEquals(60.0, servers[0].getFillPercentage(), 0.001);
         assertEquals(70.0, servers[1].getFillPercentage(), 0.001);
     }
+
+	@Test(expected = NotEnoughFreeSpaceInServerException.class)
+	public void serverTooOverloadedToAddVmShouldResultInException() throws NotEnoughFreeSpaceInServerException {
+		Vm[] vms = {new Vm(12)};
+		serverLoadBalancer.balance(singleServerArray, vms);
+
+	}
 }

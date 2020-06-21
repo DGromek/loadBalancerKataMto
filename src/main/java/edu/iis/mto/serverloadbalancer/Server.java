@@ -18,7 +18,10 @@ public class Server {
         return filledCapacity * 1.0d / capacity * 100.0;
     }
 
-    public void addVm(Vm vm){
+    public void addVm(Vm vm) throws NotEnoughFreeSpaceInServerException {
+        if (this.filledCapacity + vm.getSize() > this.capacity) {
+            throw new NotEnoughFreeSpaceInServerException("There is not enough space for this Vm! Free space: " + (this.capacity - this.filledCapacity) + " Vm size: " + vm.getSize());
+        }
         vms.add(vm);
         filledCapacity += vm.getSize();
     }
