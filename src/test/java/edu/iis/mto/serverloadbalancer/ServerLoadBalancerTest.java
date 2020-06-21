@@ -28,5 +28,15 @@ public class ServerLoadBalancerTest {
 		assertEquals(100.0d, servers[0].getFillPercentage(), 0.001);
 		assertTrue(servers[0].contains(vms[0]));
 	}
-	
+
+	@Test
+	public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer() {
+		Server[] servers = {new Server(10)};
+		Vm[] vms = {new Vm(5)};
+		ServerLoadBalancer serverLoadBalancer = new ServerLoadBalancer();
+
+		serverLoadBalancer.balance(servers, vms);
+		assertEquals(50.0, servers[0].getFillPercentage(), 0.001);
+		assertTrue(servers[0].contains(vms[0]));
+	}
 }
