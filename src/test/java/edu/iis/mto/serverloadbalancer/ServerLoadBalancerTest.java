@@ -6,14 +6,15 @@ import static org.junit.Assert.assertEquals;
 
 public class ServerLoadBalancerTest {
 
-	@Test
-	public void oneServerAndNoVmsShouldResultInServerWithNoVms() {
-		Server[] servers = {new Server(10)};
-		Vm[] vms = new Vm[0];
-		ServerLoadBalancer serverLoadBalancer = new ServerLoadBalancer();
+    @Test
+    public void oneServerAndNoVmsShouldResultInServerWithNoVms() {
+        Server[] servers = {new Server(10)};
+        Vm[] vms = new Vm[0];
+        ServerLoadBalancer serverLoadBalancer = new ServerLoadBalancer();
 
-		serverLoadBalancer.balance(servers, vms);
+        serverLoadBalancer.balance(servers, vms);
 
-		assertEquals(10, servers[0].getCapacity());
-	}
+        assertEquals(0, servers[0].getFillPercentage(), 0.001);
+    }
+
 }
