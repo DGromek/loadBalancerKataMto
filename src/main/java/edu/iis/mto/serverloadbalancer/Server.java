@@ -1,6 +1,7 @@
 package edu.iis.mto.serverloadbalancer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Server {
@@ -24,5 +25,9 @@ public class Server {
 
     public boolean contains(Vm vm) {
         return this.vms.contains(vm);
+    }
+
+    public boolean contains(Vm[] vms) {
+        return this.vms.containsAll(Arrays.asList(vms));
     }
 }
