@@ -3,6 +3,8 @@ package edu.iis.mto.serverloadbalancer;
 public class ServerLoadBalancer {
 
     public void balance(Server[] singleServerArray, Vm[] vms) {
-        singleServerArray[0].addVm(vms[0]);
+        for (Vm vm : vms) {
+            singleServerArray[0].addVm(vm);
+        }
     }
 }
