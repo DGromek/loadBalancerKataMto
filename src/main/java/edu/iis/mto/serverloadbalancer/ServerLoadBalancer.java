@@ -7,7 +7,7 @@ public class ServerLoadBalancer {
 
         for (Vm vm : vms) {
             for (Server server : servers) {
-                if (serverWithLesserFillLevel.isBiggerFilled(server)) {
+                if (serverWithLesserFillLevel.isBiggerOrSameFilled(server) && (server.getFreeSpace() >= vm.getSize())) {
                     serverWithLesserFillLevel = server;
                 }
             }

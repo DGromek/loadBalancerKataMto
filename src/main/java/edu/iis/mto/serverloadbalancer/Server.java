@@ -34,8 +34,8 @@ public class Server {
         filledCapacity += vm.getSize();
     }
 
-    public boolean isBiggerFilled(Server server) {
-        return this.getFillPercentage() > server.getFillPercentage();
+    public boolean isBiggerOrSameFilled(Server server) {
+        return this.getFillPercentage() >= server.getFillPercentage();
     }
 
     public int getFreeSpace() {
