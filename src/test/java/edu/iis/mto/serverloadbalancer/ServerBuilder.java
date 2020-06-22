@@ -20,7 +20,7 @@ public class ServerBuilder {
         return this;
     }
 
-    public Server build() {
+    public Server build() throws NotEnoughFreeSpaceInServerException {
         Server server = new Server(capacity);
         Vm filler = new Vm(filledCapacity);
         server.addVm(filler);

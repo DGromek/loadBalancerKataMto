@@ -26,7 +26,10 @@ public class Server {
         return this.vms.containsAll(Arrays.asList(vms));
     }
 
-    public void addVm(Vm vm) {
+    public void addVm(Vm vm) throws NotEnoughFreeSpaceInServerException {
+        if (vm.getSize() > this.capacity - this.filledCapacity) {
+            throw new NotEnoughFreeSpaceInServerException("Vm is too big for this server. Vm size: " + vm.getSize() + "Server free space: " + (this.capacity - this.filledCapacity));
+        }
         vms.add(vm);
         filledCapacity += vm.getSize();
     }

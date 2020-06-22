@@ -15,7 +15,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndNoVmsShouldResultInServerWithNoVms() {
+    public void oneServerAndNoVmsShouldResultInServerWithNoVms() throws NotEnoughFreeSpaceInServerException {
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = new Vm[0];
 
@@ -25,7 +25,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerWith10CapacityAndOneVmWith10SizeShouldResultInFullyFilledServer() {
+    public void oneServerWith10CapacityAndOneVmWith10SizeShouldResultInFullyFilledServer() throws NotEnoughFreeSpaceInServerException {
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = {new Vm(10)};
         serverLoadBalancer.balance(singleServerArray, vms);
@@ -35,7 +35,8 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer() {
+    public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer()
+            throws NotEnoughFreeSpaceInServerException {
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = {new Vm(5)};
         serverLoadBalancer.balance(singleServerArray, vms);
@@ -45,7 +46,8 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void oneServerAndFewVmsWithFillingServerCapacityShouldResultInFilledServerContainingAllVms() {
+    public void oneServerAndFewVmsWithFillingServerCapacityShouldResultInFilledServerContainingAllVms()
+            throws NotEnoughFreeSpaceInServerException {
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = {new Vm(5), new Vm(3), new Vm(1), new Vm(1)};
         serverLoadBalancer.balance(singleServerArray, vms);
@@ -55,7 +57,7 @@ public class ServerLoadBalancerTest {
     }
 
     @Test
-    public void twoServersAndOneVmShouldBeAssignedToLessFilledServer() {
+    public void twoServersAndOneVmShouldBeAssignedToLessFilledServer() throws NotEnoughFreeSpaceInServerException {
         Server[] servers = {new ServerBuilder().withCapacity(10)
                                                .withFilledCapacity(6).build(), new ServerBuilder().withCapacity(10)
                                                                                                   .withFilledCapacity(3).build(),};
