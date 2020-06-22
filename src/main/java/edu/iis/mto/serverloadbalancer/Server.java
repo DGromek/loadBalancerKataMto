@@ -23,6 +23,6 @@ public class Server {
 
     public void addVm(Vm vm) {
         vms.add(vm);
-        filledCapacity += 10;
+        filledCapacity += vm.getSize();
     }
 }
