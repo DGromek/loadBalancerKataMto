@@ -77,4 +77,20 @@ public class ServerLoadBalancerTest {
         Vm[] vms = {new Vm(12)};
         serverLoadBalancer.balance(singleServerArray, vms);
     }
+
+    @Test
+    public void fewServersAndFewVmsShouldResultInBalancedPlacingOfVms() throws NotEnoughFreeSpaceInServerException {
+        Server[] servers = {new Server(5), new Server(10), new Server(3)};
+        Vm[] vms = {new Vm(7), new Vm(2), new Vm(4)};
+
+        serverLoadBalancer.balance(servers, vms);
+
+        assertTrue("First Server should contain third vm", servers[0].contains(vms[2]));
+        assertTrue("Second Server should contain first vm", servers[1].contains(vms[0]));
+        assertTrue("Third Server should contain second vm", servers[2].contains(vms[1]));
+
+        assertEquals(80.0 ,servers[0].getFillPercentage(), 0.001);
+        assertEquals(70.0 ,servers[1].getFillPercentage(), 0.001);
+        assertEquals(66.666 ,servers[2].getFillPercentage(), 0.001);
+    }
 }
