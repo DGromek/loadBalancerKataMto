@@ -1,5 +1,6 @@
 package edu.iis.mto.serverloadbalancer;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -7,9 +8,15 @@ import static org.junit.Assert.assertTrue;
 
 public class ServerLoadBalancerTest {
 
+    private ServerLoadBalancer serverLoadBalancer;
+
+    @Before
+    public void setUp() {
+        serverLoadBalancer = new ServerLoadBalancer();
+    }
+
     @Test
     public void oneServerAndNoVmsShouldResultInServerWithNoVms() {
-        ServerLoadBalancer serverLoadBalancer = new ServerLoadBalancer();
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = new Vm[0];
 
@@ -20,7 +27,6 @@ public class ServerLoadBalancerTest {
 
     @Test
     public void oneServerWith10CapacityAndOneVmWith10SizeShouldResultInFullyFilledServer() {
-        ServerLoadBalancer serverLoadBalancer = new ServerLoadBalancer();
         Server[] singleServerArray = {new Server(10)};
         Vm[] vms = {new Vm(10)};
         serverLoadBalancer.balance(singleServerArray, vms);
