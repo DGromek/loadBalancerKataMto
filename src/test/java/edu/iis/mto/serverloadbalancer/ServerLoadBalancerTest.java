@@ -68,4 +68,11 @@ public class ServerLoadBalancerTest {
         assertEquals(60.0, servers[0].getFillPercentage(), 0.001);
         assertEquals(70.0, servers[1].getFillPercentage(), 0.001);
     }
+
+    @Test(expected = NotEnoughFreeSpaceInServerException.class)
+    public void serverTooOverloadedToAddVmShouldResultInException() throws NotEnoughFreeSpaceInServerException {
+        Server[] singleServerArray = {new Server(10)};
+        Vm[] vms = {new Vm(12)};
+        serverLoadBalancer.balance(singleServerArray, vms);
+    }
 }
