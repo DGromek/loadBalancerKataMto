@@ -34,4 +34,14 @@ public class ServerLoadBalancerTest {
         assertEquals(100.0d, singleServerArray[0].getFillPercentage(), 0.001);
         assertTrue(singleServerArray[0].contains(vms[0]));
     }
+
+    @Test
+    public void oneServerAndOneVmWithSmallerSizeThanServerCapacityShouldResultInPartialFilledServer() {
+        Server[] singleServerArray = {new Server(10)};
+        Vm[] vms = {new Vm(5)};
+        serverLoadBalancer.balance(singleServerArray, vms);
+
+        assertEquals(50.0, singleServerArray[0].getFillPercentage(), 0.001);
+        assertTrue(singleServerArray[0].contains(vms[0]));
+    }
 }
