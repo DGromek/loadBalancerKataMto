@@ -27,10 +27,18 @@ public class Server {
     }
 
     public void addVm(Vm vm) throws NotEnoughFreeSpaceInServerException {
-        if (vm.getSize() > this.capacity - this.filledCapacity) {
-            throw new NotEnoughFreeSpaceInServerException("Vm is too big for this server. Vm size: " + vm.getSize() + "Server free space: " + (this.capacity - this.filledCapacity));
+        if (vm.getSize() > getFreeSpace()) {
+            throw new NotEnoughFreeSpaceInServerException("Vm is too big for this server. Vm size: " + vm.getSize() + " Server free space: " + getFreeSpace());
         }
         vms.add(vm);
         filledCapacity += vm.getSize();
+    }
+
+    public boolean isBiggerFilled(Server server) {
+        return this.getFillPercentage() > server.getFillPercentage();
+    }
+
+    public int getFreeSpace() {
+        return this.capacity - this.filledCapacity;
     }
 }
