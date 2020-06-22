@@ -3,8 +3,7 @@ package edu.iis.mto.serverloadbalancer;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ServerLoadBalancerTest {
 
@@ -53,5 +52,20 @@ public class ServerLoadBalancerTest {
 
         assertEquals(100.0, singleServerArray[0].getFillPercentage(), 0.001);
         assertTrue(singleServerArray[0].contains(vms));
+    }
+
+    @Test
+    public void twoServersAndOneVmShouldBeAssignedToLessFilledServer() {
+        Server[] servers = {new ServerBuilder().withCapacity(10)
+                                               .withFilledCapacity(6).build(), new ServerBuilder().withCapacity(10)
+                                                                                                  .withFilledCapacity(3).build(),};
+        Vm[] vms = {new Vm(4)};
+        serverLoadBalancer.balance(servers, vms);
+
+        assertFalse("First Server should't contain vm", servers[0].contains(vms[0]));
+        assertTrue("Second Server should contain vm", servers[1].contains(vms[0]));
+
+        assertEquals(60.0, servers[0].getFillPercentage(), 0.001);
+        assertEquals(70.0, servers[1].getFillPercentage(), 0.001);
     }
 }
